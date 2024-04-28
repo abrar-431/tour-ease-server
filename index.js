@@ -33,6 +33,12 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/sortedspots', async(req, res)=>{
+      const cursor  = spotCollection.find();
+      const result = await cursor.sort({cost: 1}).toArray();
+      res.send(result);
+    })
+
     app.get('/spots/:id', async(req, res)=>{
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};

@@ -52,6 +52,28 @@ async function run() {
       const result = await spotCollection.insertOne(spot);
       res.send(result);
     })
+
+    app.put('/update/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const user = req.body;
+      const updatedUser = {
+        $set:{
+          spot: user.spot, 
+          country: user.country,
+          location: user.location,
+          cost: user.cost,
+          seasonality: user.seasonality,
+          time: user.time,
+          visitors: user.visitors,
+          image: user.image,
+          description: user.description
+        }
+      }
+      const result = await spotCollection.updateOne(filter, updatedUser, options);
+      res.send(result);
+    })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
